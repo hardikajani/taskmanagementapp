@@ -26,6 +26,11 @@ const TaskCard = ({ task }) => {
 
   const truncatedDescription = task.description.substring(0, 60) + (task.description.length > 60 ? '...' : '');
 
+  const handleDelete = (id) => {
+    
+    console.log('Deleting id:', id);
+  };
+
 
   return (
     <div className="flex w-full md:w-[350px] flex-col rounded-xl bg-white bg-clip-border shadow-md md:shadow-lg">
@@ -64,12 +69,12 @@ const TaskCard = ({ task }) => {
         </p>
         <div className="inline-flex flex-wrap items-center gap-3 mt-2 md:mt-4 group">
           {/* edit button */}
-          <span
+          <button
             className="cursor-pointer rounded-full border border-[#f7f7f7] bg-[#f7f7f7] p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-indigo-600 hover:text-white"
             onClick={() => setOpen(!open)}
           >
             <FaEdit />
-          </span>
+          </button>
           <AddEditTask
           open={open}
           setOpen={setOpen}
@@ -77,11 +82,12 @@ const TaskCard = ({ task }) => {
           initialFormData={{ title: task.title, description: task.description, status: task.status }}
         />
           {/* delete button */}
-          <span
+          <button
             className="cursor-pointer rounded-full border border-[#f7f7f7] bg-[#f7f7f7] p-3 text-gray-900 transition-colors hover:text-white hover:border-gray-900/10 hover:bg-red-600 hover:!opacity-100 group-hover:opacity-70"
+            onClick={handleDelete(task._id)}
           >
             <RiDeleteBin6Fill />
-          </span>
+          </button>
         </div>
       </div>
     </div>

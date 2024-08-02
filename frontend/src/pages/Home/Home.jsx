@@ -47,16 +47,12 @@ function Home() {
     fetchTasks();
   }, [token]);
 
-  useEffect(() => {
-    console.log("paginated task data", paginatedTasks); // Add this line
-  }, [paginatedTasks]);
-
-  useEffect(() => {
-    console.log("task state data", tasks); // Add this line
-  }, [tasks]);
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+  if (!tasks) {
+    return <div>No tasks found</div>;
   }
 
   return (
