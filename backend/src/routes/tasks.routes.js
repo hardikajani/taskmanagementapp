@@ -6,7 +6,7 @@ const router = Router();
 
 router.route("/create").post(verifyUser, createTask);
 router.route("/alltasks").get(verifyUser, getAllTasks);
-router.route("/deleteTask").get(verifyUser, deleteTask);
+router.route("/deleteTask/:id").delete(verifyUser, deleteTask);
 
 
 export default router;

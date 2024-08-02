@@ -1,56 +1,86 @@
 
-import {
-    Dialog,
-    DialogHeader,
-    DialogBody,
-    Input,
-    Select,
-    Option,
-} from "@material-tailwind/react";
+import { Dialog, DialogHeader, DialogBody, Input, Select, Option, } from "@material-tailwind/react";
+import PropTypes from 'prop-types';
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import api from "../../utils/baseURL";
 
-export function AddEditTask({ open, setOpen, mode, initialFormData }) {
+export function AddEditTask({ open, setOpen, mode, initialFormData, gatAllTasks }) {
     const [formData, setFormData] = useState(initialFormData)
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
+
     const { userData } = useSelector((state) => state.auth);
 
 
     const token = userData?.stsTokenManager.accessToken;
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const addNewTask = async () => {
         setLoading(true);
         if (!validateForm()) return;
         try {
             const headers = {
                 Authorization: `Bearer ${token}`,
-              };
-          // Make API request to add task
-          const response = await api.post('/api/tasks/create', formData, { headers });
-          console.log("Task added successfully:", response.data);
-          if (response.data.success == true){
-            setLoading(false);
-            setSuccess(true);
-            handleCancel();
-            return;
-          }
+            };
+            // Make API request to add task
+            const response = await api.post('/api/tasks/create', formData, { headers });
+            console.log("Task added successfully:", response.data);
+            if (response.data.success == true) {
+                setLoading(false);
+                gatAllTasks();
+                handleCancel();
+                return;
+            }
         } catch (error) {
-          if (axios.isAxiosError(error)) {
-            console.error("Axios error:", error.message);
-            setError("Failed to add task. Please try again.");
-          } else {
-            console.error("Unexpected error:", error);
-            setError("An unexpected error occurred. Please try again.");
-          }
-          setLoading(false);
+            if (axios.isAxiosError(error)) {
+                console.error("Axios error:", error.message);
+                setError("Failed to add task. Please try again.");
+            } else {
+                console.error("Unexpected error:", error);
+                setError("An unexpected error occurred. Please try again.");
+            }
+            setLoading(false);
         }
-      };
+    }
+
+    const editTask = async () => {
+        setLoading(true);
+        if (!validateForm()) return;
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            // Make API request to add task
+            const response = await api.post('/', formData, { headers });
+            console.log("Task added successfully:", response.data);
+            if (response.data.success == true) {
+                setLoading(false);
+                gatAllTasks();
+                handleCancel();
+                return;
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error("Axios error:", error.message);
+                setError("Failed to add task. Please try again.");
+            } else {
+                console.error("Unexpected error:", error);
+                setError("An unexpected error occurred. Please try again.");
+            }
+            setLoading(false);
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (mode === "add") {
+            addNewTask();
+        } else {
+            editTask();
+        }
+    };
 
     const validateForm = () => {
         let errors = {};
@@ -69,7 +99,6 @@ export function AddEditTask({ open, setOpen, mode, initialFormData }) {
             status: "To Do",
         });
     };
-
 
     return (
         <>
@@ -140,7 +169,8 @@ export function AddEditTask({ open, setOpen, mode, initialFormData }) {
                                 type="submit"
                                 className="bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm rounded-2xl hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                {mode === "add" ? "Create Task" : "Save Changes"}
+                                {mode === "add" ? "Create" : "Update"}
+                                {loading && <span className="loading loading-spinner"></span>}
                             </button>
                         </div>
                     </form>
@@ -149,3 +179,11 @@ export function AddEditTask({ open, setOpen, mode, initialFormData }) {
         </>
     );
 }
+
+AddEditTask.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    mode: PropTypes.string.isRequired,
+    initialFormData: PropTypes.object,
+    gatAllTasks: PropTypes.func,
+};

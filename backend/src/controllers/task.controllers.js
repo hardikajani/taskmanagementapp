@@ -60,8 +60,12 @@ const updateTask = asyncHandler(async (req, res) => {
 // Delete a task
 const deleteTask = asyncHandler(async (req, res) => {
     const taskId = req.params.id;
-    const task = await Task.findByIdAndRemove(taskId);
-    if (!task) {
+    const uid = req.user.uid;
+    if(!uid) throw new ApiError(404, "User not found");
+    // console.log("uid", uid);
+    // console.log("taskID", taskId);
+    const response = await Task.deleteOne({_id: taskId, userId: uid});
+    if (!response) {
         throw new ApiError(404, "Task not found");
     }
     return res.status(204).json(new ApiResponse(204, null, "Task deleted successfully"));

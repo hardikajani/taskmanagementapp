@@ -3,6 +3,8 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import PropTypes from 'prop-types';
 import { useState } from "react";
 import { AddEditTask } from "../../pages/Home/AddEditTask";
+import api from "../../utils/baseURL";
+import { useSelector } from "react-redux";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -17,21 +19,33 @@ const getStatusColor = (status) => {
   }
 };
 
-const TaskCard = ({ task }) => {
+const TaskCard = ({ task, gatAllTasks }) => {
   const [showFullTitle, setShowFullTitle] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [open, setOpen] = useState(false);
+  const { userData } = useSelector((state) => state.auth);
+  const token = userData?.stsTokenManager.accessToken;
 
   const truncatedTitle = task.title.substring(0, 16) + (task.title.length > 16 ? '...' : '');
 
   const truncatedDescription = task.description.substring(0, 60) + (task.description.length > 60 ? '...' : '');
 
-  const handleDelete = (id) => {
-    
-    console.log('Deleting id:', id);
+  const handleDelete= async (id) => {
+    console.log(id);
+    try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await api.delete(`/api/tasks/deleteTask/${id}`, { headers });
+      console.log(response.message);
+      gatAllTasks();
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-
+  
+ 
   return (
     <div className="flex w-full md:w-[350px] flex-col rounded-xl bg-white bg-clip-border shadow-md md:shadow-lg">
       <div className="p-3 md:p-3">
@@ -79,12 +93,12 @@ const TaskCard = ({ task }) => {
           open={open}
           setOpen={setOpen}
           mode="edit"
-          initialFormData={{ title: task.title, description: task.description, status: task.status }}
+          initialFormData={{ title: task.title, description: task.description, status: task.status, id: task._id }}
         />
           {/* delete button */}
           <button
             className="cursor-pointer rounded-full border border-[#f7f7f7] bg-[#f7f7f7] p-3 text-gray-900 transition-colors hover:text-white hover:border-gray-900/10 hover:bg-red-600 hover:!opacity-100 group-hover:opacity-70"
-            onClick={handleDelete(task._id)}
+            onClick={() => handleDelete(task._id)}
           >
             <RiDeleteBin6Fill />
           </button>
@@ -101,6 +115,7 @@ TaskCard.propTypes = {
     status: PropTypes.oneOf(['To Do', 'In Progress', 'Done']).isRequired,
     _id: PropTypes.string.isRequired,
   }).isRequired,
+  gatAllTasks: PropTypes.func.isRequired,
 };
 
 export default TaskCard;

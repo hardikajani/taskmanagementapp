@@ -13,7 +13,6 @@ function Home() {
   const [tasks, setTasks] = useState();
   const [loading, setLoading] = useState(true);
   const tasksPerPage = 6;
-
   const filteredTasks = Array.isArray(tasks) ? tasks.filter((task) => {
     if (selectedStatus === 'all') {
       return true;
@@ -34,25 +33,55 @@ function Home() {
   const { userData } = useSelector((state) => state.auth);
   const token = userData?.stsTokenManager.accessToken;
 
-  useEffect(() => {
-    async function fetchTasks() {
+  const gatAllTasks = async ()=>{
+    try {
+      setLoading(true);
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await api.get('/api/tasks/alltasks', { headers });
       console.log(response.data);
-      setTasks(response.data.data);
-      setLoading(false);
+      if (response.data.data.length > 0){
+        setTasks(response.data.data);
+        setLoading(false);
+      }
+      else{
+        setTasks(null);
+        setLoading(false);
+      }
+      
+    } catch (error) {
+      console.log(error);
     }
-    fetchTasks();
-  }, [token]);
+  }
+
+  useEffect(() => {
+    gatAllTasks();
+  },[]);
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="fixed top-0 left-0 w-full h-full bg-black/35 flex flex-col justify-center items-center text-white text-[18px]">Loading...</div>;
   }
   if (!tasks) {
-    return <div>No tasks found</div>;
+    return <div className="w-full flex flex-col justify-center items-center self-center py-20 px-20">
+      <h3 className="text-center text-[18px]">No tasks found, add task here!!</h3>   
+      {/* add task button */}
+      <button
+          className="absolute w-10 h-10 lg:w-16 lg:h-16 flex justify-center items-center bottom-0 lg:bottom-2 right-4 lg:right-10 bg-indigo-600 hover:bg-indigo-500 rounded-2xl"
+          onClick={() => setOpen(!open)}
+        >
+          <MdAdd className="text-[20px] lg:text-[32px] text-white" />
+        </button>
+        <AddEditTask
+          open={open}
+          setOpen={setOpen}
+          mode="add"
+          initialFormData={{ title: "", description: "", status: "To Do" }}
+          gatAllTasks={gatAllTasks}
+                    
+        />   
+      </div>;
   }
 
   return (
@@ -78,7 +107,7 @@ function Home() {
             className={`relative ${expandedCard === index ? 'h-full' : 'h-full'}  transition-all duration-300`}
             onClick={() => setExpandedCard(index)}
           >
-            <TaskCard task={task} />
+            <TaskCard task={task} gatAllTasks={gatAllTasks} />
           </div>
         ))}
       </div>
@@ -105,6 +134,8 @@ function Home() {
           setOpen={setOpen}
           mode="add"
           initialFormData={{ title: "", description: "", status: "To Do" }}
+          gatAllTasks={gatAllTasks}
+                    
         />
       </div>
     </div>
