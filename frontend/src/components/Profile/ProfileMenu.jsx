@@ -81,7 +81,7 @@ export default function ProfileMenu({ userData }) {
             <Typography
               className="text-[#333] text-[16px] font-bold cursor-pointer"
             >
-              {userData && userData.displayName ? userData.displayName[0].toUpperCase() : ''}
+              {userData && userData.displayName ? userData.displayName.slice(0, 2).toUpperCase() : ''}
             </Typography>
           )}
           <ChevronDownIcon

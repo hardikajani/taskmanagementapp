@@ -26,7 +26,6 @@ export function AddEditTask({ open, setOpen, mode, initialFormData, getAllTasks 
             };
             // Make API request to add task
             const response = await api.post('/api/tasks/create', formData, { headers });
-            console.log("Task added successfully:", response.data);
             if (response.data.success == true) {
                 setLoading(false);
                 getAllTasks();
@@ -55,7 +54,6 @@ export function AddEditTask({ open, setOpen, mode, initialFormData, getAllTasks 
             // Make API request to add task
             const id = initialFormData.id;
             const response = await api.put(`/api/tasks/updateTask/${id}`, formData, { headers });
-            console.log("Task added successfully:", response.data);
             if (response.status === 200) {
                 setLoading(false);
                 getAllTasks();

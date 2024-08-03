@@ -3,7 +3,6 @@ import authReducer from '../app/features/auth/authSlice';
 import { subscribeToStore } from '../app/features/auth/authSlice';
 
 
-
 const loadUserDataFromLocalStorage = () => {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {

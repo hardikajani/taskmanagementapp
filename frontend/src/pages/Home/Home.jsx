@@ -40,7 +40,7 @@ function Home() {
         Authorization: `Bearer ${token}`,
       };
       const response = await api.get('/api/tasks/alltasks', { headers });
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.data.length > 0){
         setTasks(response.data.data);
         setLoading(false);

@@ -8,6 +8,7 @@ export const loadFromLocalStorage = () => {
 
 export const saveToLocalStorage = (data) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  
 };
 
 export const removeFromLocalStorage = () => {
