@@ -2,7 +2,7 @@
 taskmanagementapp using MERN
 
 # Overview
-The Cloud-Based Task Manager is a web application designed to streamline team task management. Built using the MERN stack (MongoDB, Express.js, React, and Node.js), this platform provides a user-friendly interface for efficient task assignment, tracking, and collaboration. The application caters to administrators and regular users, offering comprehensive features to enhance productivity and organization.
+The Cloud-Based Task Manager is a web application designed to streamline team task management. Built using the MERN stack (MongoDB, Express.js, React, and Node.js), this platform provides a user-friendly interface for efficient task assignment, tracking, and collaboration. The application caters to regular users, offering comprehensive features to enhance productivity.
 
 
 
@@ -18,29 +18,23 @@ With the rise of remote work and dispersed teams, there is a growing need for to
 ### 
 ## **User Features:**
 1. **Task Interaction:**
-    - Change task status (in progress or completed).
+    - Add task (title, description, and a status ).
+    - Update task title, description, and a status (e.g., "To Do," "In Progress," "Done").
+    - Delete task.
     - View detailed task information.
-
-2. **Communication:**
-    - Add comments or chat to task activities.
 
 
 ## **General Features:**
 1. **Authentication and Authorization:**
+    - User create account.
     - User login with secure authentication.
-    - Role-based access control.
+    - User-based access control.
 
-2. **Profile Management:**
-    - Update user profiles.
-
-3. **Password Management:**
-    - Change passwords securely.
-
-4. **Dashboard:**
-    - Provide a summary of user activities.
-    - Filter tasks into todo, in progress, or completed.
-
-
+2. **Dashboard:**
+    - Provide a list of tasked added by user.
+    - Filter tasks into todo, in progress, or done.
+    - Update task title, description, and a status (e.g., "To Do," "In Progress," "Done").
+    - Delete task.
 
 
 ## **Technologies Used:**
@@ -50,10 +44,12 @@ With the rise of remote work and dispersed teams, there is a growing need for to
     - Headless UI
     - Tailwind CSS
     - Material-tailwind
+    - Axios for api calling
 
 
 - **Backend:**
     - Node.js with Express.js
+    - Firebase fot user authentication.
     
 - **Database:**
     - MongoDB for efficient and scalable data storage.
@@ -69,12 +65,26 @@ The Cloud-Based Task Manager is an innovative solution that brings efficiency an
 # Server Setup
 
 ## Environment variables
-First, create the environment variables file `.env` in the server folder. The `.env` file contains the following environment variables:
+First, create the environment variables file `.env` in the backend folder. The `.env` file contains the following environment variables:
 
 - MONGODB_URI = `your MongoDB URL`
-- JWT_SECRET = `any secret key - must be secured`
-- PORT = `8800` or any port number
-- NODE_ENV = `development`
+- PORT=5001
+
+- MONGODB_URI=
+- CORS_ORIGIN=*
+- FIREBASE_API_KEY=
+- FIREBASE_AUTH_DOMAIN=
+- FIREBASE_PROJECT_ID =
+- FIREBASE_STORAGE_BUCKET =
+- FIREBASE_MESSAGING_SENDER_ID =
+- FIREBASE_APP_ID =
+- FIREBASE_TYPE = 
+- FIREBASE_PRIVATE_KEY_ID = 
+- FIREBASE_PRIVATE_KEY = 
+- FIREBASE_CLIENT_EMAIL = 
+- FIREBASE_CLIENT_ID = 
+- FIREBASE_AUTH_URI = 
+- FIREBASE_TOKEN_URI =
 
 
 &nbsp;
@@ -103,9 +113,9 @@ First, create the environment variables file `.env` in the server folder. The `.
 ## Steps to run server
 
 1. Open the project in any editor of choice.
-2. Navigate into the server directory `cd server`.
+2. Navigate into the backend directory `cd backend`.
 3. Run `npm i` or `npm install` to install the packages.
-4. Run `npm start` to start the server.
+4. Run `npm start` or `npm run dev` to start the server.
 
 If configured correctly, you should see a message indicating that the server is running successfully and `Database Connected`.
 
@@ -113,18 +123,12 @@ If configured correctly, you should see a message indicating that the server is 
 
 # Client Side Setup
 
-## Environment variables
-First, create the environment variables file `.env` in the client folder. The `.env` file contains the following environment variables:
-
-- VITE_APP_BASE_URL = `http://localhost:8800` #Note: Change the port 8800 to your port number.
-- VITE_APP_FIREBASE_API_KEY = `Firebase api key`
-
 ## Steps to run client
 
-1. Navigate into the client directory `cd client`.
+1. Navigate into the frontend directory `cd frontend`.
 2. Run `npm i` or `npm install` to install the packages.
-3. Run `npm start` to run the app on `http://localhost:3000`.
-4. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. Run `npm run dev` to run the app on `http://localhost:5173`.
+4. Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
 
 
 
@@ -132,5 +136,5 @@ First, create the environment variables file `.env` in the client folder. The `.
 
 ## For Support, Contact:
 
-- Email: codewavewithasante@gmail.com
-- Telegram Chat: [https://t.me/Codewave_with_asante](https://t.me/Codewave_with_asante)
+- Email: webajanihardik@gmail.com
+- WhatsApp Chat: +91 94282 54548

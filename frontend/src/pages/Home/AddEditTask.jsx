@@ -6,7 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import api from "../../utils/baseURL";
 
-export function AddEditTask({ open, setOpen, mode, initialFormData, gatAllTasks }) {
+export function AddEditTask({ open, setOpen, mode, initialFormData, getAllTasks }) {
     const [formData, setFormData] = useState(initialFormData)
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ export function AddEditTask({ open, setOpen, mode, initialFormData, gatAllTasks 
             console.log("Task added successfully:", response.data);
             if (response.data.success == true) {
                 setLoading(false);
-                gatAllTasks();
+                getAllTasks();
                 handleCancel();
                 return;
             }
@@ -53,13 +53,13 @@ export function AddEditTask({ open, setOpen, mode, initialFormData, gatAllTasks 
                 Authorization: `Bearer ${token}`,
             };
             // Make API request to add task
-            const response = await api.post('/', formData, { headers });
+            const id = initialFormData.id;
+            const response = await api.put(`/api/tasks/updateTask/${id}`, formData, { headers });
             console.log("Task added successfully:", response.data);
-            if (response.data.success == true) {
+            if (response.status === 200) {
                 setLoading(false);
-                gatAllTasks();
+                getAllTasks();
                 handleCancel();
-                return;
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -80,6 +80,7 @@ export function AddEditTask({ open, setOpen, mode, initialFormData, gatAllTasks 
         } else {
             editTask();
         }
+        
     };
 
     const validateForm = () => {
@@ -185,5 +186,5 @@ AddEditTask.propTypes = {
     setOpen: PropTypes.func.isRequired,
     mode: PropTypes.string.isRequired,
     initialFormData: PropTypes.object,
-    gatAllTasks: PropTypes.func,
+    getAllTasks: PropTypes.func,
 };

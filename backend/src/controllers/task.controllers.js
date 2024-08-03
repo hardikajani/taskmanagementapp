@@ -45,16 +45,48 @@ const getTask = asyncHandler(async (req, res) => {
 // Update a task
 const updateTask = asyncHandler(async (req, res) => {
     const taskId = req.params.id;
-    const task = await Task.findById(taskId);
-    if (!task) {
-        throw new ApiError(404, "Task not found");
+    const uid = req.user.uid;
+    if(!uid) throw new ApiError(404, "User not found");
+    const {title, description, status} = req.body
+    if (!title || !description || !status) {
+        throw new ApiError(400, "All fields are required");
     }
-    const { title, description, status } = req.body;
-    task.title = title;
-    task.description = description;
-    task.status = status;
-    await task.save();
-    return res.status(200).json(new ApiResponse(200, task, "Task updated successfully"));
+
+    const task = await Task.findByIdAndUpdate(
+        taskId,
+        {
+            $set: {
+                title,
+                description,
+                status
+            }
+        },
+        {new: true}
+    );
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            {task},
+            "User data update successfully"
+        )
+    )
+    
+    
+    
+    // const taskId = req.params.id;
+    // const task = await Task.findById(taskId);
+    // if (!task) {
+    //     throw new ApiError(404, "Task not found");
+    // }
+    // const { title, description, status } = req.body;
+    // task.title = title;
+    // task.description = description;
+    // task.status = status;
+    // await task.save();
+    // return res.status(200).json(new ApiResponse(200, task, "Task updated successfully"));
 });
 
 // Delete a task

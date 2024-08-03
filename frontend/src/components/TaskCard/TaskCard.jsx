@@ -19,7 +19,7 @@ const getStatusColor = (status) => {
   }
 };
 
-const TaskCard = ({ task, gatAllTasks }) => {
+const TaskCard = ({ task, getAllTasks }) => {
   const [showFullTitle, setShowFullTitle] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ const TaskCard = ({ task, gatAllTasks }) => {
       };
       const response = await api.delete(`/api/tasks/deleteTask/${id}`, { headers });
       console.log(response.message);
-      gatAllTasks();
+      getAllTasks();
       
     } catch (error) {
       console.log(error);
@@ -94,6 +94,7 @@ const TaskCard = ({ task, gatAllTasks }) => {
           setOpen={setOpen}
           mode="edit"
           initialFormData={{ title: task.title, description: task.description, status: task.status, id: task._id }}
+          getAllTasks={getAllTasks}
         />
           {/* delete button */}
           <button
@@ -115,7 +116,7 @@ TaskCard.propTypes = {
     status: PropTypes.oneOf(['To Do', 'In Progress', 'Done']).isRequired,
     _id: PropTypes.string.isRequired,
   }).isRequired,
-  gatAllTasks: PropTypes.func.isRequired,
+  getAllTasks: PropTypes.func.isRequired,
 };
 
 export default TaskCard;

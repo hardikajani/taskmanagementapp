@@ -33,7 +33,7 @@ function Home() {
   const { userData } = useSelector((state) => state.auth);
   const token = userData?.stsTokenManager.accessToken;
 
-  const gatAllTasks = async ()=>{
+  const getAllTasks = async () => {
     try {
       setLoading(true);
       const headers = {
@@ -56,7 +56,7 @@ function Home() {
   }
 
   useEffect(() => {
-    gatAllTasks();
+    getAllTasks();
   },[]);
 
 
@@ -78,7 +78,7 @@ function Home() {
           setOpen={setOpen}
           mode="add"
           initialFormData={{ title: "", description: "", status: "To Do" }}
-          gatAllTasks={gatAllTasks}
+          getAllTasks={getAllTasks}
                     
         />   
       </div>;
@@ -107,7 +107,7 @@ function Home() {
             className={`relative ${expandedCard === index ? 'h-full' : 'h-full'}  transition-all duration-300`}
             onClick={() => setExpandedCard(index)}
           >
-            <TaskCard task={task} gatAllTasks={gatAllTasks} />
+            <TaskCard task={task} getAllTasks={getAllTasks} />
           </div>
         ))}
       </div>
@@ -134,7 +134,7 @@ function Home() {
           setOpen={setOpen}
           mode="add"
           initialFormData={{ title: "", description: "", status: "To Do" }}
-          gatAllTasks={gatAllTasks}
+          getAllTasks={getAllTasks}
                     
         />
       </div>
