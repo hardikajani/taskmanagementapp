@@ -30,6 +30,34 @@ const saveStateToLocalStorage = (state) => {
     localStorage.removeItem('userData');
   }
 };
+export const loadUserDataFromLocalStorage = () => {
+  const storedUserData = localStorage.getItem('userData');
+  if (storedUserData) {
+    const userData = JSON.parse(storedUserData);
+    const currentTime = new Date().getTime();
+    if (currentTime < userData.stsTokenManager.expirationTime) {
+      return {
+        auth: {
+          isLoggedIn: true,
+          userData,
+        },
+      };
+    }
+    else {
+      localStorage.removeItem('userData');
+      return {
+        auth: {
+          isLoggedIn: false,
+          userData: null,
+        },
+      };
+    }
+
+
+  } else {
+    return {};
+  }
+};
 
 // store to save the state to local storage whenever it changes
 export const subscribeToStore = (store) => {
