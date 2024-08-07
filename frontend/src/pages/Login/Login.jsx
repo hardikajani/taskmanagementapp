@@ -53,7 +53,7 @@ function Login() {
       }
     }
   };
-
+  
   const validateForm = () => {
     const errors = {};
     const { email, password } = formData;
