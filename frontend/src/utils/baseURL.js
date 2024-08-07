@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: 'https://task-management-app-alpha-pearl.vercel.app',
+    baseURL: 'http://localhost:5001',
   });
 
   export default api;
