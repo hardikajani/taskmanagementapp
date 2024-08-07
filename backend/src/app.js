@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser"
 const app = express();
 
 const corsOptions = {
-  origin: ['https://taskmanagementapp-pi.vercel.app', 'https://task-management-app-alpha-pearl.vercel.app'],
+  origin: process.env.CORS_ORIGIN,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   headers: ['Content-Type', 'Authorization'],
   credentials: true,
